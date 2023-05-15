@@ -1,6 +1,10 @@
 <script lang="ts" setup>
 import { nanoid } from "nanoid";
-import type { Column } from '~/types';
+import type { Column, Task } from '~/types';
+
+useSeoMeta({
+  title: 'DnD Board'
+})
 
 const columns = ref<Column[]>([
   {
@@ -47,10 +51,17 @@ const columns = ref<Column[]>([
             <DnDBoardDragHandle />
             {{ col.title }}
           </header>
-          <DnDBoardTask
-            v-for="   task    in    col.tasks   "
-            :key=" task.id "
-            :task=" task " />
+          <VDraggable
+            v-model=" col.tasks "
+            :animation=" 150 "
+            handle=".drag-handle"
+            group="tasks"
+            item-key="id">
+            <template #item=" { element: task }: { element: Task } ">
+              <DnDBoardTask :task=" task " />
+            </template>
+          </VDraggable>
+
           <footer>
             <button class="text-gray-500 w-full">+ Add a Task</button>
           </footer>
