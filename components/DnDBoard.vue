@@ -38,7 +38,7 @@ const columns = ref<Column[]>([
       <header>
         {{ col.title }}
       </header>
-      <p v-for="task in col.tasks" :key="task.id">{{ task.title }}</p>
+      <DnDBoardTask v-for="task in col.tasks" :key="task.id" :task="task" />
     </div>
   </div>
 </template>
