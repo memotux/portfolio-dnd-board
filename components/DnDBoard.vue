@@ -32,13 +32,16 @@ const columns = ref<Column[]>([
 </script>
 
 <template>
-  <div class="flex gap-4 overflox-x-auto items-start">
+  <div class="flex gap-4 items-start">
     <div v-for="col in columns" :key="col.id"
       class="column bg-gray-200 p-5 rounded min-w-[250px]">
-      <header>
+      <header class="font-bold mb-4">
         {{ col.title }}
       </header>
       <DnDBoardTask v-for="task in col.tasks" :key="task.id" :task="task" />
+      <footer>
+        <button class="text-gray-500 w-full">+ Add a Task</button>
+      </footer>
     </div>
   </div>
 </template>
