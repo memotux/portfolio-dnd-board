@@ -32,8 +32,9 @@ const columns = ref<Column[]>([
 </script>
 
 <template>
-  <div>
-    <div v-for="col in columns" :key="col.id">
+  <div class="flex gap-4 overflox-x-auto items-start">
+    <div v-for="col in columns" :key="col.id"
+      class="column bg-gray-200 p-5 rounded min-w-[250px]">
       <header>
         {{ col.title }}
       </header>
