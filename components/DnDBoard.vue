@@ -35,6 +35,8 @@ const columns = ref<Column[]>([
   <div>
     <VDraggable
       v-model="columns"
+      :animation="150"
+      handle=".drag-handle"
       group="columns"
       item-key="id"
       class="flex gap-4 items-start">
@@ -42,9 +44,13 @@ const columns = ref<Column[]>([
         <div
           class="column bg-gray-200 p-5 rounded min-w-[250px]">
           <header class="font-bold mb-4">
+            <DnDBoardDragHandle />
             {{ col.title }}
           </header>
-          <DnDBoardTask v-for=" task  in  col.tasks " :key=" task.id " :task=" task " />
+          <DnDBoardTask
+            v-for="   task    in    col.tasks   "
+            :key=" task.id "
+            :task=" task " />
           <footer>
             <button class="text-gray-500 w-full">+ Add a Task</button>
           </footer>
@@ -54,5 +60,3 @@ const columns = ref<Column[]>([
 
   </div>
 </template>
-
-<style scoped></style>
