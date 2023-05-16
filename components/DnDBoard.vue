@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { nanoid } from "nanoid";
-import type { Column, Task } from '~/types';
+import type { Column, Task, ID } from '~/types';
 
 useSeoMeta({
   title: 'DnD Board'
@@ -33,6 +33,8 @@ const columns = ref<Column[]>([
   { title: 'QA', id: nanoid(), tasks: [] },
   { title: 'Complete', id: nanoid(), tasks: [] },
 ])
+
+const alt = useKeyModifier('Alt')
 </script>
 
 <template>
@@ -55,15 +57,19 @@ const columns = ref<Column[]>([
             v-model=" col.tasks "
             :animation=" 150 "
             handle=".drag-handle"
-            group="tasks"
+            :group=" { name: 'tasks', pull: alt ? 'clone' : true } "
             item-key="id">
             <template #item=" { element: task }: { element: Task } ">
-              <DnDBoardTask :task=" task " />
+              <div>
+                <DnDBoardTask :task=" task "
+                  @delete="col.tasks = col.tasks.filter(t => t.id !== $event)" />
+              </div>
             </template>
           </VDraggable>
 
           <footer>
-            <button class="text-gray-500 w-full">+ Add a Task</button>
+            <DnDBoardNewTask
+              @add="col.tasks.push($event)" />
           </footer>
         </div>
       </template>
