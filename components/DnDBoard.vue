@@ -6,7 +6,7 @@ useSeoMeta({
   title: 'DnD Board'
 })
 
-const columns = ref<Column[]>([
+const columns = useLocalStorage<Column[]>('dndBoard', [
   {
     id: nanoid(),
     title: 'Backlog',
@@ -14,17 +14,17 @@ const columns = ref<Column[]>([
       {
         id: nanoid(),
         title: 'Create marketing landing page',
-        createdAt: new Date()
+        createdAt: new Date().toISOString()
       },
       {
         id: nanoid(),
         title: 'Develop cool new feature',
-        createdAt: new Date()
+        createdAt: new Date().toISOString()
       },
       {
         id: nanoid(),
         title: 'Fix page nav bug',
-        createdAt: new Date()
+        createdAt: new Date().toISOString()
       },
     ]
   },
@@ -34,11 +34,34 @@ const columns = ref<Column[]>([
   { title: 'Complete', id: nanoid(), tasks: [] },
 ])
 
+function createColumn() {
+  const column: Column = {
+    id: nanoid(),
+    title: '',
+    tasks: []
+  }
+
+  columns.value.push(column)
+
+  nextTick(() => {
+    const createdColumn = document.querySelector('.column:last-of-type .title-input') as HTMLInputElement
+    if (createdColumn) {
+      createdColumn.focus()
+    }
+  })
+}
+
+function deleteColumn(col: Column) {
+  col.title === ''
+    ? (columns.value = columns.value.filter((c) => c.id !== col.id))
+    : null
+}
+
 const alt = useKeyModifier('Alt')
 </script>
 
 <template>
-  <div>
+  <div class="flex items-start overflow-x-scroll gap-4">
     <VDraggable
       v-model="columns"
       :animation="150"
@@ -51,7 +74,12 @@ const alt = useKeyModifier('Alt')
           class="column bg-gray-200 p-5 rounded min-w-[250px]">
           <header class="font-bold mb-4">
             <DnDBoardDragHandle />
-            {{ col.title }}
+            <input
+              class="title-input bg-transparent focus:bg-white rounded px-1 w-4/5"
+              @keyup.enter="($event.target as HTMLInputElement).blur()"
+              @keydown.backspace="deleteColumn(col)"
+              type="text"
+              v-model=" col.title " />
           </header>
           <VDraggable
             v-model=" col.tasks "
@@ -74,6 +102,8 @@ const alt = useKeyModifier('Alt')
         </div>
       </template>
     </VDraggable>
-
+    <button
+      @click=" createColumn "
+      class="bg-gray-200 whitespace-nowrap p-2 rounded opacity-50">+ Add Column</button>
   </div>
 </template>

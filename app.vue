@@ -5,7 +5,7 @@
         alt="Vue School" />
       <h1 class="text-4xl text-white ">DnD Board</h1>
     </header>
-    <main class="p-10 overflow-x-scroll">
+    <main class="p-10">
       <DnDBoard />
     </main>
   </div>
