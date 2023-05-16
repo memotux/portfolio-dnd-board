@@ -1,5 +1,5 @@
 {
-  "name": "nuxt-app",
+  "name": "@memotux/portfolio-dnd-board",
   "private": true,
   "scripts": {
     "build": "nuxt build",
